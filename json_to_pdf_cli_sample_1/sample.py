@@ -1,4 +1,5 @@
 import json
+import json
 import click
 from fpdf import FPDF
 
@@ -15,8 +16,8 @@ def generate_pdf(input_file, output_file):
     pdf.add_font('cmbx','', './fonts/cmbx12.ttf', uni=True)
     pdf.add_font('cmsl','', './fonts/cmsl12.ttf', uni=True)
     pdf.set_font("cmr", "", 24)
+    remain_space = 204 - pdf.get_x()
     pdf.cell(0, 7, data["Name"] , ln=1, align="C")
-    pdf.set_font("times", "", 10)
 
     pdf.set_font("cmr", "", 10)
     if data.get('mobile'):
@@ -80,7 +81,6 @@ def generate_pdf(input_file, output_file):
         pdf.cell(0, 7, data['education'].get("Education-clg"))
         pdf.cell(0, 7, data['education'].get("ed-date"), ln=1, align="R")
         pdf.set_font("cmsl", "", 10)
-        remain_space = 204 - pdf.get_x()
         lines = pdf.multi_cell(remain_space, 4, data['education'].get("edu-details"))
 
         for line in lines:
@@ -97,7 +97,10 @@ def generate_pdf(input_file, output_file):
         for i in range(len(data["achievement"])):
             pdf.cell(5)
             pdf.cell(5, 6, "-")
-            pdf.cell(0, 6, data["achievement"][i].get("ach-details"), ln=1)
+            lines = pdf.multi_cell(remain_space, 4, data['achievement'][i].get("ach-details"))
+            
+            for line in lines:
+                pdf.cell(0, 5, line)
         pdf.set_y(pdf.get_y() + 2)
 
     # Check if 'experience' key exists
@@ -115,7 +118,10 @@ def generate_pdf(input_file, output_file):
             for j in range(len(data['experience'][i].get("exp-details3"))):
                 pdf.cell(5)
                 pdf.cell(5, 5, "-")
-                pdf.cell(0, 5, data['experience'][i].get("exp-details3")[j].get("exp_details"), ln=1)
+                pdf.multi_cell(remain_space, 4, data['experience'][i].get("exp-details3")[j].get("exp_details"))
+                
+                for line in lines:
+                    pdf.cell(0, 5, line)
         pdf.set_y(pdf.get_y() + 2)
 
     # Check if 'Internships' key exists
@@ -133,7 +139,9 @@ def generate_pdf(input_file, output_file):
             for j in range(len(data['Internships'][i].get("intern-details3"))):
                 pdf.cell(5)
                 pdf.cell(5, 5, "-")
-                pdf.cell(0, 5, data['Internships'][i].get("intern-details3")[j].get("intern_details"), ln=1)
+                pdf.multi_cell(remain_space, 4, data['Internships'][i].get("intern-details3")[j].get("intern_details"))
+                for line in lines:
+                    pdf.cell(0, 5, line)
         pdf.set_y(pdf.get_y() + 2)
 
     # Check if 'Hackathon' key exists
