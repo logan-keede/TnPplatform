@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,8 +92,8 @@ LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
-            'client_id': '8506682513-m8lo3m2h0dv564dud09ids3bq6bk3ca1.apps.googleusercontent.com',
-            'secret': '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',
+            'client_id': os.getenv("client"),
+            'secret': os.getenv("secret"),
             'key': '',
         },
         'SCOPE': [
