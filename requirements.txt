@@ -1,0 +1,5 @@
+django
+django-admin
+django-allauth
+djangorestframework
+pydotenv
