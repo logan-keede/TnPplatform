@@ -69,6 +69,9 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    'Job_Opening',
+    'TrainingProgram',
+    'Announcement'
 ]
 
 
@@ -120,6 +123,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+
 ]
 
 
