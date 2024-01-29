@@ -37,7 +37,7 @@ class JSON2pdfView(APIView):
         serializer = JSON2pdfSerializer(data=request.data)
         if serializer.is_valid():
             json_file = serializer.validated_data['json'][0]
-            print(json_file["Name"])
+            # print(json_file["Name"])
             json2pdf_instance = JSON2pdf(json = json_file)
             json2pdf_instance.save()
             pdf_file = './Resume.pdf'  # or determine the path dynamically
@@ -45,7 +45,7 @@ class JSON2pdfView(APIView):
 
 
              # Load your credentials from the 'token.json' file
-            creds = get_google_drive_credentials(request.user)
+            # creds = get_google_drive_credentials(request.user)
 
             x =store_pdf_in_drive(request.user, pdf_data, file_name='Resume.pdf')
             # Call the Drive v3 API
@@ -62,33 +62,3 @@ class JSON2pdfView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
-
-# Example Usage in a Django view
-# @login_required
-# def upload_pdf(request):
-#     if request.method == 'POST' and request.FILES.get('pdf_file'):
-#         user = request.user
-#         pdf_file = request.FILES['pdf_file']
-
-#         # Save the PDF file locally
-#         file_path = default_storage.save(pdf_file.name, ContentFile(pdf_file.read()))
-
-#         # Read the PDF content
-#         with default_storage.open(file_path) as pdf_content:
-#             # Store PDF in Google Drive
-#             file_id = store_pdf_in_drive(user, pdf_content.read(), file_name=pdf_file.name)
-
-#         # Cleanup: Delete the local copy of the PDF file
-#         default_storage.delete(file_path)
-
-#         return HttpResponse(f'PDF successfully uploaded to Google Drive with File ID: {file_id}')
-
-#     return render(request, 'upload_pdf.html')
-
-        
-    # def main():
-    #     generate_pdf()
-
-    # if __name__ == '__main__':
-    #     main()
