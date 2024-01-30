@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "Announcement",
     "api",
     "allauth.usersessions",
+
 ]
 
 
