@@ -69,9 +69,12 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    'Job_Opening',
-    'TrainingProgram',
-    'Announcement'
+    "Job_Opening",
+    "TrainingProgram",
+    "Announcement",
+    "api",
+    "allauth.usersessions",
+
 ]
 
 
@@ -104,15 +107,14 @@ SOCIALACCOUNT_PROVIDERS = {
             'email',
             'https://www.googleapis.com/auth/drive.file',
             ],
-        'auth_params': {
-            'access_type': 'online',  # Example: request offline access
+        'AUTH_PARAMS': {
+            'access_type': 'offline',  # Example: request offline access
             # 'prompt': 'consent',       # Example: force the consent screen to appear
         },
     }
 }
 
-
-
+SOCIALACCOUNT_STORE_TOKENS = True
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -123,7 +125,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
-
 ]
 
 

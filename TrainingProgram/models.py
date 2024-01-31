@@ -1,3 +1,5 @@
+# models.py
+
 from django.db import models
 
 class TrainingProgram(models.Model):
@@ -6,5 +8,3 @@ class TrainingProgram(models.Model):
     training_organization = models.CharField(max_length=200)
     start_date = models.DateField()
     end_date = models.DateField()
-
-# Create your models here.
