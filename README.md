@@ -1,7 +1,9 @@
-#PDFcli
+# TnPplatform
+Repository to develop the Official Tnp Platform of IIIT Surat.
 
-A way to input JSON containing ones details like education, projects, grades etc.
- 
-All the details needed can be seen from the PDF in this Branch.
+Link to the design file of the platform.
+https://www.figma.com/file/wozFBE1uSt4uNtp5tkYU4q/Tnp-platform?type=design&node-id=0%3A1&mode=design&t=xvSuqvpZq5RCAN46-1
 
-Implement a python cli that reads details from a .json file and outputs a pdf(in the format available here).
+Go to the mid-fieldity page (navigate by top left pages menu)
+
+On the mid-fieldity page present it (from top right play button) to see it's actual behaviour
