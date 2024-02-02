@@ -19,7 +19,7 @@ from google.oauth2.credentials import Credentials
 # from django.templatetags.static import static
 
 from .models import JSON2pdf
-from .utils import generate_pdf, store_pdf_in_drive, get_google_drive_credentials
+from .utils import generate_pdf
 
 from io import BytesIO
 
@@ -47,7 +47,7 @@ class JSON2pdfView(APIView):
              # Load your credentials from the 'token.json' file
             # creds = get_google_drive_credentials(request.user)
 
-            x =store_pdf_in_drive(request.user, pdf_data, file_name='Resume.pdf')
+            # x =store_pdf_in_drive(request.user, pdf_data, file_name='Resume.pdf')
             # Call the Drive v3 API
             # # service = build('drive', 'v3', credentials=creds)
 
@@ -57,7 +57,7 @@ class JSON2pdfView(APIView):
             # # # Upload the file to Google Drive
             # # file_metadata = {'name': 'Resume.pdf'}
             # file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-            print(x)
+            # print(x)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

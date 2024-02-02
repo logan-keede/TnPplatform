@@ -12,14 +12,9 @@ json_data = {
     "email" : "abcdfldfdofksd@gmail.com",
     "linked" : "linkedin.com/in/akash-dholakiya-91599024b/",
     "github" : "github.com/akashdholakiya",
-    "CareerSum" : [
-        {
+    "CareerSum" :{
         "data" : "lorem ipsum asa sa idsuiad auid jasjd suiad iuasd uias asid uiasdh uisa huiashd uisah sd lorem s sisisi si si jsi jsi js jis is isi si isj is lorem ipsum asa sa idsuiad auid jasjd suiad iuasd uias asid uiasdh uisa huiashd uisah sd lorem s sisisi si si jsi jsi js jis is isi si isj is lorem ipsum asa sa idsuiad auid jasjd suiad iuasd uias asid uiasdh uisa huiashd uisah sd lorem s sisisi si si jsi jsi js jis is isi si isj is lorem ipsum asa sa idsuiad auid jasjd suiad iuasd uias asid uiasdh uisa huiashd uisah sd lorem s sisisi si si jsi jsi js jis is isi si isj is lorem ipsum asa sa idsuiad auid jasjd suiad iuasd uias asid uiasdh uisa huiashd uisah sd lorem s sisisi si si jsi jsi js jis is isi si isj is"
     },
-    {
-        "date" : "june-2020"
-    }
-    ],
     "education" : {
         "Education-clg" : "This College",
         "ed-date" : "july 2001 - july 2005",

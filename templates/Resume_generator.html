@@ -90,7 +90,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="eddetails" class="form-label">Education details</label>
-                    <input type="text" class="form-control" id="cname" name="eddetails">
+                    <input type="text" class="form-control" id="eddetails" name="eddetails">
                 </div>
             </div>
             <div class="d-flex justify-content-center">
@@ -331,7 +331,7 @@
             <!-- Buttons to handle next and previous for Github Projects -->
             <div class="d-flex justify-content-center">
                 <div class="btn btn-outline-success px-5 mx-4" onclick="handlePrev(7)">Prev</div>
-                <button class="btn btn-success px-5 mx-4" onclick="HandleSubmit()" type="submit">Submit</button>
+                <div class="btn btn-success px-5 mx-4" onclick="HandleSubmit()">Submit</div>
             </div>
         </div>
     </form>
@@ -656,7 +656,6 @@
         var csrfToken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
         var careerSummary = {
             "data": document.getElementById('career-summary').value,
-            "date": "june-2020"  // Assuming a fixed date
         }; 
 
         // Education details
@@ -731,7 +730,7 @@
             "email": email,
             "linked": linked,
             "github": github,
-            "CareerSum": [careerSummary],
+            "CareerSum": careerSummary,
             "education": education,
             "achievement": achievements,
             "experience": experiences,
@@ -761,7 +760,7 @@
         // Prevent the default form submission
         return false;
     }
-    </script>
+</script>
 </body>
 
 </html>
