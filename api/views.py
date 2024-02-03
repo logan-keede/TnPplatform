@@ -42,7 +42,7 @@ class JSON2pdfView(APIView):
             json2pdf_instance.save()
             pdf_file = './Resume.pdf'  # or determine the path dynamically
             pdf_data = generate_pdf(json_file, pdf_file)
-
+ 
 
              # Load your credentials from the 'token.json' file
             # creds = get_google_drive_credentials(request.user)

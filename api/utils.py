@@ -15,6 +15,7 @@ from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 from google.oauth2.credentials import Credentials
 
 from inspect import getsourcefile
+from django.conf import settings
 from os.path import abspath
 from pathlib import Path
 import os
@@ -24,12 +25,19 @@ def generate_pdf(data, output_file):
     pdf.add_page()
     pdf.set_auto_page_break(True, margin=7)
     
-    font_path = abspath('cmr12.ttf')
-    print(font_path)  
+    # font_path = abspath('cmr12.ttf')
+    # print(font_path)  
 
-    pdf.add_font('cmr', '', os.path.join(font_path, '..\\cmr12.ttf'), uni = True)
-    pdf.add_font('cmbx','', os.path.join(font_path,'..\\cmbx12.ttf'), uni = True)
-    pdf.add_font('cmsl','', os.path.join(font_path,'..\\cmsl12.ttf'), uni = True)
+    font_path1 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmr12.ttf')
+    font_path2 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmbx12.ttf')
+    font_path3 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmsl12.ttf')
+    image_path1 = os.path.join(settings.BASE_DIR, 'api', 'images', 'phone-flip-solid.png')
+    image_path2 = os.path.join(settings.BASE_DIR, 'api', 'images', 'envelope-solid.png')
+    image_path3 = os.path.join(settings.BASE_DIR, 'api', 'images', 'github.png')
+    image_path4 = os.path.join(settings.BASE_DIR, 'api', 'images', 'linkedin.png')
+    pdf.add_font('cmr', '', font_path1, uni = True)
+    pdf.add_font('cmbx','', font_path2, uni = True)
+    pdf.add_font('cmsl','', font_path3, uni = True)
 
     pdf.set_font("cmr", "", 24) 
     remain_space = 204 - pdf.get_x()
@@ -38,7 +46,7 @@ def generate_pdf(data, output_file):
     pdf.set_font("cmr", "", 10)
     if data.get('mobile'):
         pdf.set_x(pdf.get_x() + 60)
-        pdf.image(os.path.join(font_path , '..\\phone-flip-solid.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.2)
+        pdf.image(image_path1, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.2)
         pdf.set_x(pdf.get_x() + 4)
         width = pdf.get_string_width(data['mobile'])
         pdf.cell(width + 2, 5, data['mobile']) 
@@ -47,7 +55,7 @@ def generate_pdf(data, output_file):
     pdf.set_font("cmr", "U", 10) 
     if data.get('email'):  
         pdf.set_x(pdf.get_x() + 2)
-        pdf.image(os.path.join(font_path , '..\\envelope-solid.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)      
+        pdf.image(image_path2, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)      
         pdf.set_x(pdf.get_x() + 4)
         pdf.set_link(link=f"mailto:{data['email']}")
         width = pdf.get_string_width(data['email'])
@@ -56,7 +64,7 @@ def generate_pdf(data, output_file):
 
     if data.get('linked'):
         pdf.set_x(pdf.get_x() + 50)
-        pdf.image(os.path.join(font_path ,  '..\\linkedin.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
+        pdf.image(image_path4, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
         pdf.set_x(pdf.get_x() + 4)
         width = pdf.get_string_width(data['linked'])
         linkedin = f"https://{data['linked']}"
@@ -65,7 +73,7 @@ def generate_pdf(data, output_file):
         
     if data.get('github'):
         pdf.set_x(pdf.get_x() + 2)
-        pdf.image(os.path.join(font_path , '..\\github.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
+        pdf.image(image_path3, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
         pdf.set_x(pdf.get_x() + 4)
         width = pdf.get_string_width(data['github'])
         github = f"https://{data['github']}"
