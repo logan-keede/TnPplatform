@@ -7,7 +7,7 @@ url = 'http://127.0.0.1:8000/json2pdf/'
 json_data = {
     "json": [
         {
-    "Name" : "LOREN IPSUM",
+    "Name" : "LOREN IPSUMS",
     "mobile" : "+91(123)456-7890",
     "email" : "abcdfldfdofksd@gmail.com",
     "linked" : "linkedin.com/in/akash-dholakiya-91599024b/",

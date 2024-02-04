@@ -115,15 +115,15 @@ def generate_pdf(data, output_file):
         pdf.set_font("cmbx", "", 14)
         pdf.cell(0, 7, "Achievements", ln=1)
         pdf.line(10, pdf.get_y(), 204, pdf.get_y())
+        pdf.set_y(pdf.get_y() + 2)
         pdf.set_font("cmr", "", 10)
-        p = 0
         for i in range(len(data["achievement"])):
             pdf.cell(5)
-            pdf.cell(5, 6, "-")
             lines = pdf.multi_cell(remain_space, 4, data['achievement'][i].get("ach-details"))
             
             for line in lines:
                 pdf.cell(0, 5, line)
+            pdf.set_y(pdf.get_y() + 1)
         pdf.set_y(pdf.get_y() + 2)
 
     # Check if 'experience' key exists
@@ -140,7 +140,6 @@ def generate_pdf(data, output_file):
             pdf.cell(0, 5, data['experience'][i].get("exp-details2"), ln=1, align="R")
             for j in range(len(data['experience'][i].get("exp-details3"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 pdf.multi_cell(remain_space, 4, data['experience'][i].get("exp-details3")[j].get("exp_details"))
                 
                 for line in lines:
@@ -161,7 +160,6 @@ def generate_pdf(data, output_file):
             pdf.cell(0, 5, data['Internships'][i].get("intern-details2"), ln=1, align="R")
             for j in range(len(data['Internships'][i].get("intern-details3"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 pdf.multi_cell(remain_space, 4, data['Internships'][i].get("intern-details3")[j].get("intern_details"))
                 for line in lines:
                     pdf.cell(0, 5, line)
@@ -176,10 +174,9 @@ def generate_pdf(data, output_file):
             pdf.set_font("cmbx", "", 11)
             pdf.cell(0, 6, data['Hackathon'][i].get("hack-title"))
             pdf.cell(0, 6, data['Hackathon'][i].get("hack-date"), ln=1, align="R")
-            pdf.set_font("cmr", "", 10)
+            pdf.set_font("cmr", "", 10) 
             for j in range(len(data['Hackathon'][i].get("hack-details"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 lines = pdf.multi_cell(remain_space, 4, data['Hackathon'][i].get("hack-details")[j].get("hack_details1"))
                 for line in lines:
                     pdf.cell(0, 5, line)
@@ -200,7 +197,6 @@ def generate_pdf(data, output_file):
             pdf.set_font("cmr", "", 10)
             for j in range(len(data['Gitproj'][i].get("gitproj-details"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 lines = pdf.multi_cell(remain_space, 4, data['Gitproj'][i].get("gitproj-details")[j].get("gitproj_details1"))
 
                 for line in lines:
@@ -213,46 +209,46 @@ def generate_pdf(data, output_file):
 
     return pdf_data
 
-# def store_pdf_in_drive(user, pdf_content, file_name='document.pdf'):
-#     credentials = get_google_drive_credentials(user)
-#     service = build('drive', 'v3', credentials=credentials)
+def store_pdf_in_drive(user, pdf_content, file_name='document.pdf'):
+    credentials = get_google_drive_credentials(user)
+    service = build('drive', 'v3', credentials=credentials)
 
-#     file_metadata = {
-#         'name': file_name,
-#         'mimeType': 'application/pdf'
-#     }
+    file_metadata = {
+        'name': file_name,
+        'mimeType': 'application/pdf'
+    }
 
-#     media = MediaIoBaseUpload(io.BytesIO(pdf_content), mimetype='application/pdf')
+    media = MediaIoBaseUpload(io.BytesIO(pdf_content), mimetype='application/pdf')
 
-#     file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
 
-#     return file.get('id')
+    return file.get('id')
 
-# def get_google_drive_credentials(user):
-#     try:
-#         # Retrieve the SocialAccount linked to the user's Google account
-#         print(user)
-#         google_social_account = SocialAccount.objects.get(provider='google', user=user)
+def get_google_drive_credentials(user):
+    try:
+        # Retrieve the SocialAccount linked to the user's Google account
+        print(user)
+        google_social_account = SocialAccount.objects.get(provider='google', user=user)
 
-#         google_social_token = SocialToken.objects.get(account=google_social_account)
-#         # print(google_social_token.token)
-#         # print(google_social_token.token_secret)
-#         # Access the Google Drive credentials
-#         social_app = SocialApp.objects.get(provider='google')
-#         credentials_data = {
-#             'token': google_social_token.token,
-#             'refresh_token': google_social_token.token_secret,  # Assuming refresh_token is stored here
-#             'token_uri': 'https://oauth2.googleapis.com/token',
-#             'client_id': social_app.client_id,
-#             'client_secret': social_app.secret,
-#             'scopes': ['https://www.googleapis.com/auth/drive.file'],
-#         }
-#         credentials = Credentials.from_authorized_user_info(credentials_data)
+        google_social_token = SocialToken.objects.get(account=google_social_account)
+        # print(google_social_token.token)
+        # print(google_social_token.token_secret)
+        # Access the Google Drive credentials
+        social_app = SocialApp.objects.get(provider='google')
+        credentials_data = {
+            'token': google_social_token.token,
+            'refresh_token': google_social_token.token_secret,  # Assuming refresh_token is stored here
+            'token_uri': 'https://oauth2.googleapis.com/token',
+            'client_id': social_app.client_id,
+            'client_secret': social_app.secret,
+            'scopes': ['https://www.googleapis.com/auth/drive.file'],
+        }
+        credentials = Credentials.from_authorized_user_info(credentials_data)
 
-#         # You can now use 'credentials' to interact with Google Drive API
-#         return credentials
+        # You can now use 'credentials' to interact with Google Drive API
+        return credentials
 
-#     except SocialAccount.DoesNotExist:
-#         # Handle the case where the user is not connected with Google
-#         return None
+    except SocialAccount.DoesNotExist:
+        # Handle the case where the user is not connected with Google
+        return None
  
