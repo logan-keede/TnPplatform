@@ -71,7 +71,8 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.google",
     "Job_Opening",
     "TrainingProgram",
-    "Announcement"
+    "Announcement",
+    "student"
 ]
 
 
