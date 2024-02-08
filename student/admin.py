@@ -3,7 +3,7 @@ from .models import *
 
 # Register your models here.
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('First_Name', 'Last_Name', 'Student_ID', 'Email', 'Branch', 'Resume_Link', 'CGPA', 'Block_All_Applications','Placed', 'Access_Token')
+    list_display = ('Student_ID', 'Branch', 'Resume_Link', 'CGPA', 'Block_All_Applications','Placed', 'Access_Token')
 
 class TrainingRegAdmin(admin.ModelAdmin):
     list_display = ('Student_ID','Training_ID','Attended')
