@@ -8,6 +8,10 @@ from Job_Opening.models import Job_Opening
 # Create your models here.
 class Student(AbstractUser):
 
+    #username, first name, last name, email and other permission related things are inherited from abstractUser class.
+
+
+    #Student_ID unique for everyone
     Student_ID = models.CharField(max_length=8, blank=True, unique = True)
 
     BRANCH_CHOICES = [
