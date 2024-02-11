@@ -69,6 +69,12 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "Job_Opening",
+    "TrainingProgram",
+    "Announcement",
+    "api",
+    "allauth.usersessions",
+
 ]
 
 
@@ -101,15 +107,14 @@ SOCIALACCOUNT_PROVIDERS = {
             'email',
             'https://www.googleapis.com/auth/drive.file',
             ],
-        'auth_params': {
-            'access_type': 'online',  # Example: request offline access
+        'AUTH_PARAMS': {
+            'access_type': 'offline',  # Example: request offline access
             # 'prompt': 'consent',       # Example: force the consent screen to appear
         },
     }
 }
 
-
-
+SOCIALACCOUNT_STORE_TOKENS = True
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -128,7 +133,7 @@ ROOT_URLCONF = "TnPplatform.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ['templates','api/templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -190,6 +195,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+
+STATICFILES_DIRS = [
+    'api/fonts/',
+    'api/images/',
+]
+ 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
