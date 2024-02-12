@@ -1,6 +1,6 @@
 from django.contrib.staticfiles import finders
 from fpdf import FPDF
-
+import fpdf
 import io
 from google.oauth2.credentials import Credentials
 # from google.auth.transport.requests import Request
@@ -20,6 +20,8 @@ from os.path import abspath
 from pathlib import Path
 import os
 
+
+fpdf.set_global("FPDF_CACHE_MODE", 1)
 def generate_pdf(data, output_file):
     pdf = FPDF('P', 'mm', 'Letter') # Page size
     pdf.add_page()
