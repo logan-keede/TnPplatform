@@ -17,3 +17,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('json2pdf/', JSON2pdfView.as_view(), name='json2pdf'),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+for static_url in settings.STATICFILES_DIRS:
+    urlpatterns += static(static_url, document_root=settings.STATIC_ROOT)
