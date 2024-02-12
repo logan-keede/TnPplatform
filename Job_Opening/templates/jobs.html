@@ -1,0 +1,6 @@
+{% for job in jobs %}
+    <h2><a href="{% url 'job_detail' job.id %}">{{ job.NameofCompany }}</a></h2>
+    <p>{{ job.profileOfCompany }}</p>
+    <p>{{ job.JobProfile }}</p>
+    <!-- Add more fields as needed -->
+{% endfor %}

@@ -1,0 +1,22 @@
+<h2>{{ job.NameofCompany }}</h2>
+<p>{{ job.profileOfCompany }}</p>
+<p>{{ job.JobProfile }}</p>
+<!-- Add more fields as needed -->
+
+{% if has_applied %}
+<p>Registered</p>
+{% else %}
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Register</button>
+</form>
+{% endif %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
