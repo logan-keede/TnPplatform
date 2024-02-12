@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "Job_Opening",
     "TrainingProgram",
     "Announcement",
+    "student",
     "api",
     "allauth.usersessions",
 
@@ -158,6 +159,10 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# custom user model
+
+AUTH_USER_MODEL = 'student.Student'
 
 
 # Password validation
