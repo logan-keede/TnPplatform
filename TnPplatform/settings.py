@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     "TrainingProgram",
     "Announcement",
     "student",
-    "api",
+    # "api",
     "allauth.usersessions"
 ]
 
