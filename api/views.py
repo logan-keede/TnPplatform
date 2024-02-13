@@ -19,7 +19,7 @@ from google.oauth2.credentials import Credentials
 # from django.templatetags.static import static
 
 from .models import JSON2pdf
-from .utils import generate_pdf, store_pdf_in_drive, get_google_drive_credentials
+from .utils import generate_pdf, store_pdf_in_drive
 
 from io import BytesIO
 
@@ -33,17 +33,17 @@ from django.http import HttpResponse
 
 
 class JSON2pdfView(APIView):
-    def post(self, request, format=None):
+    def post(self, request, format=None): 
         serializer = JSON2pdfSerializer(data=request.data)
         if serializer.is_valid():
             json_file = serializer.validated_data['json'][0]
-            # print(json_file["Name"])
+            # print(json_file["Name"])  
             json2pdf_instance = JSON2pdf(json = json_file)
             json2pdf_instance.save()
             pdf_file = './Resume.pdf'  # or determine the path dynamically
             pdf_data = generate_pdf(json_file, pdf_file)
-
-
+ 
+            print(request.user)
              # Load your credentials from the 'token.json' file
             # creds = get_google_drive_credentials(request.user)
 

@@ -1,9 +1,7 @@
 from django.contrib.staticfiles import finders
 from fpdf import FPDF
-
-
+import fpdf
 import io
-
 from google.oauth2.credentials import Credentials
 # from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
@@ -17,37 +15,49 @@ from allauth.socialaccount.models import SocialAccount, SocialToken, SocialApp
 from google.oauth2.credentials import Credentials
 
 from inspect import getsourcefile
+from django.conf import settings
 from os.path import abspath
+from pathlib import Path
 import os
 
+
+fpdf.set_global("FPDF_CACHE_MODE", 1)
 def generate_pdf(data, output_file):
-    pdf = FPDF('P', 'mm', 'Letter')
+    pdf = FPDF('P', 'mm', 'Letter') # Page size
     pdf.add_page()
     pdf.set_auto_page_break(True, margin=7)
     
-    font_path = abspath(getsourcefile(lambda:0))
-    pdf.add_font('cmr', '', os.path.join(font_path, '..\\cmr12.ttf'), uni = True)
-   
-    pdf.add_font('cmbx','', os.path.join(font_path,'..\\cmbx12.ttf'), uni = True)
-    pdf.add_font('cmsl','', os.path.join(font_path,'..\\cmsl12.ttf'), uni = True)
+    # font_path = abspath('cmr12.ttf')
+    # print(font_path)  
 
-    pdf.set_font("cmr", "", 24)
+    font_path1 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmr12.ttf')
+    font_path2 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmbx12.ttf')
+    font_path3 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmsl12.ttf')
+    image_path1 = os.path.join(settings.BASE_DIR, 'api', 'images', 'phone-flip-solid.png')
+    image_path2 = os.path.join(settings.BASE_DIR, 'api', 'images', 'envelope-solid.png')
+    image_path3 = os.path.join(settings.BASE_DIR, 'api', 'images', 'github.png')
+    image_path4 = os.path.join(settings.BASE_DIR, 'api', 'images', 'linkedin.png')
+    pdf.add_font('cmr', '', font_path1, uni = True)
+    pdf.add_font('cmbx','', font_path2, uni = True)
+    pdf.add_font('cmsl','', font_path3, uni = True)
+
+    pdf.set_font("cmr", "", 24) 
     remain_space = 204 - pdf.get_x()
     pdf.cell(0, 7, data["Name"] , ln=1, align="C")
 
     pdf.set_font("cmr", "", 10)
     if data.get('mobile'):
         pdf.set_x(pdf.get_x() + 60)
-        pdf.image(os.path.join(font_path,'..\\phone-flip-solid.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.2)
+        pdf.image(image_path1, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.2)
         pdf.set_x(pdf.get_x() + 4)
         width = pdf.get_string_width(data['mobile'])
-        pdf.cell(width + 2, 5, data['mobile'])
+        pdf.cell(width + 2, 5, data['mobile']) 
 
         
-    pdf.set_font("cmr", "U", 10)
+    pdf.set_font("cmr", "U", 10) 
     if data.get('email'):  
         pdf.set_x(pdf.get_x() + 2)
-        pdf.image(os.path.join(font_path,'..\\envelope-solid.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)      
+        pdf.image(image_path2, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)      
         pdf.set_x(pdf.get_x() + 4)
         pdf.set_link(link=f"mailto:{data['email']}")
         width = pdf.get_string_width(data['email'])
@@ -56,7 +66,7 @@ def generate_pdf(data, output_file):
 
     if data.get('linked'):
         pdf.set_x(pdf.get_x() + 50)
-        pdf.image(os.path.join(font_path,'..\\linkedin.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
+        pdf.image(image_path4, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
         pdf.set_x(pdf.get_x() + 4)
         width = pdf.get_string_width(data['linked'])
         linkedin = f"https://{data['linked']}"
@@ -65,7 +75,7 @@ def generate_pdf(data, output_file):
         
     if data.get('github'):
         pdf.set_x(pdf.get_x() + 2)
-        pdf.image(os.path.join(font_path,'..\\github.png'), x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
+        pdf.image(image_path3, x=pdf.get_x(), y=pdf.get_y()+1, w=3.5, h=3.5)
         pdf.set_x(pdf.get_x() + 4)
         width = pdf.get_string_width(data['github'])
         github = f"https://{data['github']}"
@@ -80,12 +90,11 @@ def generate_pdf(data, output_file):
         pdf.set_font("cmr", "", 10)
 
         remain_space = 204 - pdf.get_x()
-        lines = pdf.multi_cell(remain_space, 5, data['CareerSum'][0].get('data'))
+        lines = pdf.multi_cell(remain_space, 5, data['CareerSum'].get("data"))
 
         for line in lines:
             pdf.cell(0, 5, line)
 
-        pdf.cell(0, 6, data['CareerSum'][1].get("date"), ln=1)
         pdf.set_y(pdf.get_y() + 2)
 
     # Check if 'education' key exists
@@ -108,15 +117,15 @@ def generate_pdf(data, output_file):
         pdf.set_font("cmbx", "", 14)
         pdf.cell(0, 7, "Achievements", ln=1)
         pdf.line(10, pdf.get_y(), 204, pdf.get_y())
+        pdf.set_y(pdf.get_y() + 2)
         pdf.set_font("cmr", "", 10)
-        p = 0
         for i in range(len(data["achievement"])):
             pdf.cell(5)
-            pdf.cell(5, 6, "-")
             lines = pdf.multi_cell(remain_space, 4, data['achievement'][i].get("ach-details"))
             
             for line in lines:
                 pdf.cell(0, 5, line)
+            pdf.set_y(pdf.get_y() + 1)
         pdf.set_y(pdf.get_y() + 2)
 
     # Check if 'experience' key exists
@@ -133,7 +142,6 @@ def generate_pdf(data, output_file):
             pdf.cell(0, 5, data['experience'][i].get("exp-details2"), ln=1, align="R")
             for j in range(len(data['experience'][i].get("exp-details3"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 pdf.multi_cell(remain_space, 4, data['experience'][i].get("exp-details3")[j].get("exp_details"))
                 
                 for line in lines:
@@ -154,7 +162,6 @@ def generate_pdf(data, output_file):
             pdf.cell(0, 5, data['Internships'][i].get("intern-details2"), ln=1, align="R")
             for j in range(len(data['Internships'][i].get("intern-details3"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 pdf.multi_cell(remain_space, 4, data['Internships'][i].get("intern-details3")[j].get("intern_details"))
                 for line in lines:
                     pdf.cell(0, 5, line)
@@ -169,10 +176,9 @@ def generate_pdf(data, output_file):
             pdf.set_font("cmbx", "", 11)
             pdf.cell(0, 6, data['Hackathon'][i].get("hack-title"))
             pdf.cell(0, 6, data['Hackathon'][i].get("hack-date"), ln=1, align="R")
-            pdf.set_font("cmr", "", 10)
+            pdf.set_font("cmr", "", 10) 
             for j in range(len(data['Hackathon'][i].get("hack-details"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 lines = pdf.multi_cell(remain_space, 4, data['Hackathon'][i].get("hack-details")[j].get("hack_details1"))
                 for line in lines:
                     pdf.cell(0, 5, line)
@@ -193,13 +199,12 @@ def generate_pdf(data, output_file):
             pdf.set_font("cmr", "", 10)
             for j in range(len(data['Gitproj'][i].get("gitproj-details"))):
                 pdf.cell(5)
-                pdf.cell(5, 5, "-")
                 lines = pdf.multi_cell(remain_space, 4, data['Gitproj'][i].get("gitproj-details")[j].get("gitproj_details1"))
 
                 for line in lines:
                     pdf.cell(0, 5, line)
     # print(f"Output file: {output_file}")
-    # pdf.output(output_file).encode('latin1')
+    pdf.output(output_file)
     # print("PDF generated")
     pdf_data = pdf.output(dest='S').encode('latin1')
     # print("PDF generated")
@@ -248,3 +253,4 @@ def get_google_drive_credentials(user):
     except SocialAccount.DoesNotExist:
         # Handle the case where the user is not connected with Google
         return None
+ 

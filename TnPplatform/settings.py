@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5-2(3up9rv(ow!&02!$u3ratdn=drbt+67(!z$i%#jp7tjdjsh"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "Job_Opening",
     "TrainingProgram",
     "Announcement",
+    "student",
     "api",
     "allauth.usersessions",
 
@@ -133,7 +134,7 @@ ROOT_URLCONF = "TnPplatform.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ['templates','api/templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -158,6 +159,10 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+# custom user model
+
+AUTH_USER_MODEL = 'student.Student'
 
 
 # Password validation
@@ -195,6 +200,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+
+STATICFILES_DIRS = [
+    'api/fonts/',
+    'api/images/',
+]
+ 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
