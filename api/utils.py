@@ -229,7 +229,6 @@ def store_pdf_in_drive(user, pdf_content, file_name='document.pdf'):
 def get_google_drive_credentials(user):
     try:
         # Retrieve the SocialAccount linked to the user's Google account
-        print(user)
         google_social_account = SocialAccount.objects.get(provider='google', user=user)
 
         google_social_token = SocialToken.objects.get(account=google_social_account)
