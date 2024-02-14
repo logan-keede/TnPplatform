@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User, AbstractUser
+from allauth.socialaccount.models import SocialAccount
 from django.db import models
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
 from TrainingProgram.models import TrainingProgram
+import uuid
 from Job_Opening.models import Job_Opening
 
 from .managers import StudentManager
@@ -64,3 +66,10 @@ class Job_Student_Application(models.Model):
     Job_ID = models.ForeignKey(Job_Opening, on_delete = models.CASCADE)
     Blocked = models.BooleanField()
     Status = models.CharField(max_length = 1)
+
+# @receiver(post_save, sender = SocialAccount)
+# def create_profile(sender, instance, created, **kwargs):
+#     if created:
+#        # Grabbing data from social account to create profile for that user
+#        profile=Student(Student_ID=instance.user)
+#        profile.save()
