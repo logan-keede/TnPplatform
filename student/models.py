@@ -1,21 +1,35 @@
 from django.contrib.auth.models import User, AbstractUser
 from allauth.socialaccount.models import SocialAccount
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
 from TrainingProgram.models import TrainingProgram
 import uuid
 from Job_Opening.models import Job_Opening
 
-# Create your models here
-class Student(AbstractUser):
-    
-    #username, first name, last name, email an   d other permission related things are inherited from abstractUser class.
+from .managers import StudentManager
 
-    #Student_ID unique for everyone 
-    Student_ID = models.AutoField(primary_key=True)
-    # Student_ID = models.BigAutoField(primary_key=True)
-    
+# Create your models here.
+class Student(AbstractUser):
+    """
+    first name, last name, email and other permission related things are inherited from abstractUser class.
+
+    removed username field and made email field required.
+
+    using custom manager StudentManager
+
+    Student_ID is self Generating from the given email 
+    """
+
+    username = None
+    email = models.EmailField(("email address"), unique=True)
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
+
+    #Student_ID unique for everyone
+    Student_ID = models.CharField(max_length=8, unique = True)
+
     BRANCH_CHOICES = [
         ("CSE", "Computer Science and Engineering"),
         ("ECE", "Electronics and Engineering"),
@@ -28,6 +42,19 @@ class Student(AbstractUser):
     Placed = models.ForeignKey(Job_Opening, null = True, blank = True, on_delete = models.CASCADE)
     Access_Token = models.CharField(max_length=300, null = True)
     resume_json = models.JSONField(null = True, blank = True)
+
+    # using personal model manager
+    objects = StudentManager();
+
+    def __str__(self):
+        return self.email
+    
+    # method that extracts roll no from email
+    def save(self, *args, **kwargs):
+        self.Student_ID = self.email.split('@')[0]
+        super(Student, self).save(*args, **kwargs)
+
+    
 
 class Student_Training_Registration(models.Model):
     Student_ID = models.ForeignKey(Student, on_delete = models.CASCADE)
