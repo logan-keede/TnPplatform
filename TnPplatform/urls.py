@@ -26,4 +26,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('announcements', include('Announcement.urls')),
     path('', include('Job_Opening.urls')),
+    path('', include('TrainingProgram.urls')),
 ]
