@@ -24,7 +24,7 @@ urlpatterns = [
     path('accounts/', include('allauth.socialaccount.urls')),
     path('', include('api.urls')),
     path('', views.index, name='index'),
-    path('announcements', include('Announcement.urls')),
+    path('', include('Announcement.urls')),
     path('', include('Job_Opening.urls')),
     path('', include('TrainingProgram.urls')),
 ]

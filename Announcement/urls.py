@@ -1,7 +1,10 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from .views import AnnouncementViewSet
 
+router = DefaultRouter()
+router.register(r'announcements', AnnouncementViewSet, basename='announcement-list')
+
 urlpatterns = [
-    path('', AnnouncementViewSet.as_view(), name='announcement-list'),
-    path('/<int:pk>/', AnnouncementViewSet.as_view(), name='announcement-detail'),
+    path('', include(router.urls)),
 ]

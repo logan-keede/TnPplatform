@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+'''from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Announcement
@@ -46,4 +46,12 @@ class AnnouncementViewSet(APIView):
     def delete(self, request, *args, **kwargs):
         announcement = get_object_or_404(Announcement, pk=kwargs.get('pk'))
         announcement.delete()
-        return JsonResponse({'detail': 'Deleted successfully'}, status=204)
+        return JsonResponse({'detail': 'Deleted successfully'}, status=204)'''
+
+from rest_framework import viewsets
+from .models import Announcement
+from .serializer import AnnouncementSerializer
+
+class AnnouncementViewSet(viewsets.ModelViewSet):
+    queryset = Announcement.objects.all()
+    serializer_class = AnnouncementSerializer
