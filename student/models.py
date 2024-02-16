@@ -28,7 +28,7 @@ class Student(AbstractUser):
     REQUIRED_FIELDS = []
 
     #Student_ID unique for everyone
-    Student_ID = models.CharField(max_length=8, unique = True)
+    Student_ID = models.CharField(max_length=8, unique = True, default=uuid.uuid4)
 
     BRANCH_CHOICES = [
         ("CSE", "Computer Science and Engineering"),
