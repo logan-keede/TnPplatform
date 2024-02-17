@@ -54,6 +54,8 @@ LOGIN_REDIRECT_URL = '/'
 # Enable Google OAuth
 
 INSTALLED_APPS = [
+    "allauth.socialaccount",
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -67,7 +69,6 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     "Job_Opening",
     "TrainingProgram",
