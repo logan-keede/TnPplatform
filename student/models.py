@@ -1,10 +1,8 @@
-from django.contrib.auth.models import User, AbstractUser
-from allauth.socialaccount.models import SocialAccount
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
 from TrainingProgram.models import TrainingProgram
-import uuid
 from Job_Opening.models import Job_Opening
 
 from .managers import StudentManager
@@ -21,18 +19,15 @@ class Student(AbstractUser):
     Student_ID is self Generating from the given email 
     """
 
-    username = None
     email = models.EmailField(("email address"), unique=True)
-
-    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     #Student_ID unique for everyone
-    Student_ID = models.CharField(max_length=8, unique = True, default=uuid.uuid4)
+    Student_ID = models.CharField(max_length=20, default = "studentID",unique = True)
 
     BRANCH_CHOICES = [
-        ("CSE", "Computer Science and Engineering"),
-        ("ECE", "Electronics and Engineering"),
+        ("CSE", "CSE"),
+        ("ECE", "ECE"),
     ]
 
     Branch = models.CharField(max_length=50, choices=BRANCH_CHOICES)
@@ -47,7 +42,7 @@ class Student(AbstractUser):
     objects = StudentManager();
 
     def __str__(self):
-        return self.email
+        return self.username
     
     # method that extracts roll no from email
     def save(self, *args, **kwargs):
