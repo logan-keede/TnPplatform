@@ -1,6 +1,6 @@
 # models.py
-
 from django.db import models
+# from student.models import Student
 
 class TrainingProgram(models.Model):
     training_subject = models.CharField(max_length=200)
@@ -8,3 +8,5 @@ class TrainingProgram(models.Model):
     training_organization = models.CharField(max_length=200)
     start_date = models.DateField()
     end_date = models.DateField()
+
+    # Students = models.ManyToManyField(Student, through = "Job_Student_Application")

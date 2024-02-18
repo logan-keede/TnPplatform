@@ -11,7 +11,7 @@ class JSON2pdf(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(Student, on_delete=models.CASCADE)
     google_drive_credentials = models.TextField(null=True, blank=True)
     
 

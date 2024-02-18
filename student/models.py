@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from TrainingProgram.models import TrainingProgram
 from Job_Opening.models import Job_Opening
 from allauth.socialaccount.models import SocialAccount
+
 from .managers import StudentManager
 
 # Create your models here.
@@ -61,6 +62,7 @@ class Job_Student_Application(models.Model):
     Job_ID = models.ForeignKey(Job_Opening, on_delete = models.CASCADE)
     Blocked = models.BooleanField()
     Status = models.CharField(max_length = 1)
+
 
 @receiver(post_save, sender = SocialAccount)
 def create_profile(sender, instance, created, **kwargs):

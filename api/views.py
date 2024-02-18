@@ -19,7 +19,7 @@ from google.oauth2.credentials import Credentials
 # from django.templatetags.static import static
 
 from .models import JSON2pdf
-from .utils import generate_pdf, store_pdf_in_drive, get_google_drive_credentials
+from .utils import generate_pdf, store_pdf_in_drive
 
 from io import BytesIO
 
@@ -66,8 +66,10 @@ from student.models import Student
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class JSON2pdfView(APIView):
+
     def post(self, request, format=None):
         student_id = Student.objects.get(username=request.user).Student_ID
+
         serializer = JSON2pdfSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -79,6 +81,7 @@ class JSON2pdfView(APIView):
             # Update the json field and save the instance
             json2pdf_instance.json = json_file
             json2pdf_instance.save()
+
 
             pdf_file = './Resume.pdf'  # or determine the path dynamically
             pdf_data = generate_pdf(json_file, pdf_file)

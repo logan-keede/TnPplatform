@@ -40,3 +40,4 @@ def index(request):
 #        profile=Student.objects.get(username=instance.user)
 #        profile.Student_ID = instance.user
 #        profile.save()
+
