@@ -223,8 +223,11 @@ def store_pdf_in_drive(user, pdf_content, file_name='document.pdf'):
     media = MediaIoBaseUpload(io.BytesIO(pdf_content), mimetype='application/pdf')
 
     file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    file_id = file.get('id')
+    # web_view_link = file.get('webViewLink')
 
-    return file.get('id')
+    return file_id
+    # return file.get('id')
 
 def get_google_drive_credentials(user):
     try:
