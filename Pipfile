@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+django-admin = "*"
+django-allauth = "*"
+djangorestframework = "*"
+pydotenv = "*"
+python-dotenv = "*"
+google-auth = "*"
+google-auth-oauthlib = "*"
+google-auth-httplib2 = "*"
+google-api-python-client = "*"
+fpdf = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
