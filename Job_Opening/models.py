@@ -26,4 +26,5 @@ class Job_Opening(models.Model):
     
     location = models.CharField(max_length=100)
     stipend = models.IntegerField()
-    start = models.DateField()
+    join_date = models.DateField()
+    end_of_registration = models.DateField()
