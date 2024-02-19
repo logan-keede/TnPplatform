@@ -10,3 +10,5 @@ class TrainingProgram(models.Model):
     end_date = models.DateField()
 
     # Students = models.ManyToManyField(Student, through = "Job_Student_Application")
+    def __str__(self) -> str:
+        return f"{self.training_subject}"

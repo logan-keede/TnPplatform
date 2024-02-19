@@ -131,15 +131,15 @@ class StudentAdmin(UserAdmin):
             )}
         ),
     )
-    search_fields = ("username","email", "Branch", "Student_ID")
+    search_fields = ("username","email", "Branch", "Student_ID", )
 
 class TrainingRegAdmin(admin.ModelAdmin):
     list_display = ('Student_ID','Training_ID','Attended')
-    search_fields = ('Student_ID', 'Training_ID')
+    search_fields = ('Student_ID__Student_ID', 'Training_ID__training_subject')
 
 class JobApplicationAdmin(admin.ModelAdmin):
     list_display = ('Student_ID','Job_ID','Blocked', 'Status')
-    search_fields = ('Student_ID', 'Job_ID')
+    search_fields = ('Student_ID__Student_ID', 'Job_ID__NameofCompany')
 
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Student_Training_Registration, TrainingRegAdmin)

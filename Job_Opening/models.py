@@ -27,3 +27,6 @@ class Job_Opening(models.Model):
     location = models.CharField(max_length=100)
     stipend = models.IntegerField()
     start = models.DateField()
+
+    def __str__(self):
+        return f"{self.NameofCompany}"

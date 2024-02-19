@@ -19,8 +19,8 @@ class Student(AbstractUser):
     Student_ID is self Generating from the given email 
     """
 
-    email = models.EmailField(("email address"), unique=True)
-    REQUIRED_FIELDS = []
+    # email = models.EmailField(("email address"), unique=True)
+    # REQUIRED_FIELDS = []
 
     #Student_ID unique for everyone
     Student_ID = models.CharField(max_length=20, default = "studentID",unique = True)
@@ -39,17 +39,18 @@ class Student(AbstractUser):
     resume_json = models.JSONField(null = True, blank = True)
 
     # using personal model manager
-    objects = StudentManager();
+    # objects = StudentManager();
 
     def __str__(self):
-        return self.username
+        if self.first_name:
+            return f"{self.first_name} {self.last_name}"
+        else:
+            return self.username
     
     # method that extracts roll no from email
     def save(self, *args, **kwargs):
         self.Student_ID = self.email.split('@')[0]
         super(Student, self).save(*args, **kwargs)
-
-    
 
 class Student_Training_Registration(models.Model):
     Student_ID = models.ForeignKey(Student, on_delete = models.CASCADE)
