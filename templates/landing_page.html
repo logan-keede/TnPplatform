@@ -5,6 +5,7 @@
 fetch('announcements/')
     .then(response => response.json())
     .then(announcements => {
+        const currentDate = new Date();
         const announcementsDiv = document.getElementById('announcements');
         announcements.forEach(announcement => {
             const p = document.createElement('p');
@@ -31,14 +32,17 @@ fetch('announcements/')
 fetch('job_openings/')
     .then(response => response.json())
     .then(jobOpenings => {
+        const currentDate = new Date();
         const jobOpeningsDiv = document.getElementById('job_openings');
         jobOpenings.forEach(jobOpening => {
-            const p = document.createElement('p');
+            const endOfRegistration = new Date(jobOpening.end_of_registration);
+            if (endOfRegistration > currentDate)
+            {            const p = document.createElement('p');
             const a = document.createElement('a');
             a.href = `/job_openings/${jobOpening.id}/`;
             a.textContent = jobOpening.NameofCompany;
             p.appendChild(a);
-            jobOpeningsDiv.appendChild(p);
+            jobOpeningsDiv.appendChild(p);}
         });
     });
 </script>
@@ -50,13 +54,16 @@ fetch('job_openings/')
 fetch('training_programs/')
     .then(response => response.json())
     .then(trainingPrograms => {
+        const currentDate = new Date();
         const trainingProgramsDiv = document.getElementById('training_programs');
         trainingPrograms.forEach(trainingProgram => {
+            const endDate = new Date(trainingProgram.end_of_registration);
+            if (endDate > currentDate){
             const p = document.createElement('p');
             const a = document.createElement('a');
             a.href = `/training_programs/${trainingProgram.id}/`;
             a.textContent = trainingProgram.training_subject;
-            p.appendChild(a);
+            p.appendChild(a);}
             trainingProgramsDiv.appendChild(p);
         });
     });
