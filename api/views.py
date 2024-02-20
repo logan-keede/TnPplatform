@@ -70,7 +70,7 @@ class JSON2pdfView(APIView):
     def post(self, request, format=None):
         student_id = Student.objects.get(username=request.user).Student_ID
 
-        serializer = JSON2pdfSerializer(data=request.data)
+        serializer = JSON2pdfSerializer(student_id=student_id, data=request.data)
 
         if serializer.is_valid():
             json_file = serializer.validated_data['json'][0]
