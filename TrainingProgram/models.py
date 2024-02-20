@@ -6,7 +6,7 @@ class TrainingProgram(models.Model):
     training_subject = models.CharField(max_length=200)
     prerequisites = models.TextField()
     training_organization = models.CharField(max_length=200)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    join_date = models.DateField()
+    end_of_registration = models.DateField()
 
     # Students = models.ManyToManyField(Student, through = "Job_Student_Application")

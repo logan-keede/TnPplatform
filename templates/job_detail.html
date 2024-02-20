@@ -1,0 +1,53 @@
+<script>
+function registerJob() {
+    var form = document.getElementById('registerForm');
+    form.innerHTML = '<p>Registering...</p>';
+    form.submit();
+}
+</script>
+
+<h1>{{ job.NameofCompany }}</h1>
+<p>Profile of Company: {{ job.profileOfCompany }}</p>
+<p>Job Profile: {{ job.JobProfile }}</p>
+<p>Branch Choice: {{ job.get_BranchChoice_display }}</p>
+<p>CTC: {{ job.ctc }}</p>
+<p>Eligibility: {{ job.Eligibility }}</p>
+<p>Selection: {{ job.get_Selection_display }}</p>
+<p>Location: {{ job.location }}</p>
+<p>Stipend: {{ job.stipend }}</p>
+<p>Joining Date: {{ job.join_date }}</p>
+<p>End Date for Registration: {{ job.end_of_registration }}</p>
+
+{% if user.is_authenticated %}
+    {% if user_has_registered %}
+        <p>You have already registered for this job.</p>
+    {% else %}
+        <form id="registerForm">
+            {% csrf_token %}
+            <input type="button" value="Register" onclick="registerJob()">
+        </form>
+    {% endif %}
+{% else %}
+    <a href="{% url 'login' %}">Login to register</a>
+{% endif %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+function registerJob() {
+    var form = $('#registerForm');
+    form.html('<p>Registering...</p>');
+    $.ajax({
+        url: "{% url 'register_job' job.id %}",
+        type: 'post',
+        headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        success: function(response) {
+            if (response.status == 'success') {
+                form.html('<p>Registered</p>');
+                setTimeout(function() {
+                    window.location.href = "/";
+                }, 2000);  // Redirect after 2 seconds
+            }
+        }
+    });
+}
+</script>
