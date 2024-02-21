@@ -59,7 +59,8 @@ def export_job_data(modeladmin, request, queryset):
 export_job_data.short_description = "Export selected jobs' data"
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('NameofCompany', 'profileOfCompany', 'JobProfile', 'BranchChoice', 'ctc', 'Eligibility', 'Selection', 'location', 'stipend', 'join_date', 'end_of_registration')
+    list_display = ('id','NameofCompany', 'profileOfCompany', 'JobProfile', 'BranchChoice', 'ctc', 'Eligibility', 'Selection', 'location', 'stipend', 'join_date', 'end_of_registration')
     actions = [export_job_data]
+    search_fields = ("id","NameofCompany",)
 
 admin.site.register(Job_Opening, JobAdmin)
