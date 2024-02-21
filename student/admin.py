@@ -8,6 +8,105 @@ import os
 import zipfile
 from django.http import HttpResponse
 from Job_Opening.admin import JobAdmin
+from django.contrib.auth.models import Group
+from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
+from allauth.account.models import EmailAddress
+from django.contrib.sites.models import Site
+from django.db.models.query import QuerySet
+
+
+class YearFilter(admin.SimpleListFilter):
+
+    # heading of the filter
+    title = "year"
+
+    # name passed in url of query
+    parameter_name = "year"
+
+    def lookups(self, request, model_admin):
+        """
+        this is the list where the values on the right side are the filter option's names.
+        """
+        return [
+            (('UI20'),('4th Year')),
+            (('UI21'),('3rd Year')),
+            (('UI22'),('2nd Year')),
+            (('UI23'),('1st Year')),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == '':
+            return queryset
+
+        # returns entries for 4th year
+        if self.value() == 'UI20':
+            return queryset.filter(Student_ID__startswith = 'UI20')
+
+        # returns entries for 3rd year
+        if self.value() == 'UI21':
+            return queryset.filter(Student_ID__startswith = 'UI21')
+
+        # returns entries for 2nd year
+        if self.value() == 'UI22':
+            return queryset.filter(Student_ID__startswith = 'UI22')
+
+        # returns entries for 1st year
+        if self.value() == 'UI23':
+            return queryset.filter(Student_ID__startswith = 'UI23')
+
+class PlacedFilter(admin.SimpleListFilter):
+
+    # heading of the filter
+    title = "Placements"
+
+    # name passed in url of query
+    parameter_name = "placed"
+
+    def lookups(self, request, model_admin):
+        """
+        this is the list where the values on the right side are the filter option's names.
+        """
+        return [
+            (('not_placed'),('Not placed')),
+            (('placed'),('Placed')),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == '':
+            return queryset
+
+        if self.value() == 'placed':
+            return queryset.exclude(Placed = None) 
+
+        if self.value() == 'ot_placed':
+            return queryset.filter(Placed = None) 
+
+class PackageCategoryFilter(admin.SimpleListFilter):
+
+    # heading of the filter
+    title = "Package Category"
+
+    # name passed in url of query
+    parameter_name = "category"
+
+    def lookups(self, request, model_admin):
+        """
+        this is the list where the values on the right side are the filter option's names.
+        """
+        return [
+            (('A'),('A')),
+            (('B'),('B')),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == '':
+            return queryset
+
+        if self.value() == 'A':
+            return queryset.filter(CGPA__gte = 7.5) 
+
+        if self.value() == 'B':
+            return queryset.filter(CGPA__lt = 7.5)
 
 def export_student_data(modeladmin, request, queryset):
     zip_buffer = io.BytesIO()
@@ -93,7 +192,16 @@ export_student_data.short_description = "Export selected students' data"
 
 class StudentAdmin(admin.ModelAdmin):
     actions = [export_student_data]
-    list_display = ('Student_ID', 'username', 'email', 'Branch')
+    list_display = ('Student_ID', 'username', 'email', 'Branch', 'CGPA')
+    list_filter = ("Branch",YearFilter, PlacedFilter, PackageCategoryFilter)
+    ordering = ("email",)
+
+    fieldsets = (
+        (None, {'fields': ('username','email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Student info', {'fields': ('Student_ID', 'Branch', 'Resume_Link', 'CGPA', 'Block_All_Applications','Placed')}),)
+    search_fields = ("username","email", "Branch", "Student_ID")
 #class JobAdmin(admin.ModelAdmin):
 #     actions = [export_job_data]
 #     list_display = ('id', 'NameofCompany', 'JobProfile', 'ctc')
