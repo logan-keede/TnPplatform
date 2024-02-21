@@ -1,7 +1,7 @@
 # TnPplatform/urls.py
 from django.contrib import admin
 from django.urls import path, include
-from student.admin import custom_admin_site
+# from student.admin import custom_admin_site
 from . import views
 
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
     path('', include('TrainingProgram.urls')),
     path('', include('student.urls')),
     path('admin/', include('student.urls')),
-    path('admin/student/', custom_admin_site.urls),
+    # path('admin/student/', custom_admin_site.urls),
     path('student/', include('student.urls')),
 
 ]
