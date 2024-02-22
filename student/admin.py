@@ -7,7 +7,26 @@ from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
 from allauth.account.models import EmailAddress
 from django.contrib.sites.models import Site
 from django.db.models.query import QuerySet
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin, ExportActionModelAdmin
+from import_export.fields import Field
+from import_export.widgets import ForeignKeyWidget
+from Job_Opening.models import Job_Opening
 from .models import *
+
+class StudentResource(resources.ModelResource):
+    class Meta:
+        model = Student
+        fields = ('first_name', 'last_name', 'email', 'Student_ID','CGPA', 'Block_All_Applications', 'Placed')
+
+class JobApplicationResource(resources.ModelResource):
+
+    Company = Field(attribute='Company_Name', column_name='Company_name', widget=ForeignKeyWidget(Job_Opening, field='NameofCompany'))
+    # country = fields.Field(column_name='country', attribute='country', widget=ForeignKeyWidget(Country, field='name'))
+
+    class Meta:
+        model = Job_Student_Application
+        fields = ('Blocked','Status','Job_ID__ctc','Job_ID__JobProfile', 'Company',)
 
 # define your filters here
 
@@ -105,7 +124,9 @@ class PackageCategoryFilter(admin.SimpleListFilter):
             return queryset.filter(CGPA__lt = 7.5)
 
 # Register your models here.
-class StudentAdmin(UserAdmin):
+class StudentAdmin(UserAdmin, ImportExportModelAdmin, ExportActionModelAdmin):
+
+    resource_classes = [StudentResource]
 
     list_filter = ("Branch",YearFilter, PlacedFilter, PackageCategoryFilter)
 
@@ -137,7 +158,8 @@ class TrainingRegAdmin(admin.ModelAdmin):
     list_display = ('Student_ID','Training_ID','Attended')
     search_fields = ('Student_ID__Student_ID', 'Training_ID__training_subject')
 
-class JobApplicationAdmin(admin.ModelAdmin):
+class JobApplicationAdmin(ImportExportModelAdmin):
+    resource_classes = [JobApplicationResource]
     list_display = ('Student_ID','Job_ID','Blocked', 'Status')
     search_fields = ('Student_ID__Student_ID', 'Job_ID__NameofCompany')
 

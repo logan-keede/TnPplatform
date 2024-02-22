@@ -7,9 +7,11 @@ import os
 from inspect import getsourcefile
 import requests
 import json
+from allauth.socialaccount.models import SocialAccount
+
 # Create your views here.
 
-@login_required
+@login_required(login_url="/accounts/google/login")
 def index(request):
     if request.method == "POST":
 
@@ -27,4 +29,15 @@ def index(request):
         else :
             print(serializedJson.errors)
     
-    return render(request, "Resume_generator.html") 
+    return render(request, "Resume_generator.html")
+
+
+
+# @receiver(post_save, sender = SocialAccount)
+# def create_profile(sender, instance, created, **kwargs):
+#     if created:
+#        # Grabbing data from social account to create profile for that user
+#        profile=Student.objects.get(username=instance.user)
+#        profile.Student_ID = instance.user
+#        profile.save()
+

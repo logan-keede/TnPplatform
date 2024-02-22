@@ -1,9 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from TrainingProgram.models import TrainingProgram
 from Job_Opening.models import Job_Opening
+from allauth.socialaccount.models import SocialAccount
 
 from .managers import StudentManager
 
@@ -63,9 +64,11 @@ class Job_Student_Application(models.Model):
     Blocked = models.BooleanField()
     Status = models.CharField(max_length = 1)
 
-# @receiver(post_save, sender = SocialAccount)
-# def create_profile(sender, instance, created, **kwargs):
-#     if created:
-#        # Grabbing data from social account to create profile for that user
-#        profile=Student(Student_ID=instance.user)
-#        profile.save()
+
+@receiver(post_save, sender = SocialAccount)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+       # Grabbing data from social account to create profile for that user
+       profile=Student.objects.get(username=instance.user)
+       profile.Student_ID = instance.user
+       profile.save()

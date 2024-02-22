@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     "student",
     "api",
     "allauth.usersessions",
+    'import_export',
 
 ]
 
