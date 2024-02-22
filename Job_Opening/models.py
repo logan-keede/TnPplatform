@@ -28,3 +28,6 @@ class Job_Opening(models.Model):
     stipend = models.IntegerField()
     join_date = models.DateField()
     end_of_registration = models.DateField()
+
+    def _str_(self):
+        return f"{self.NameofCompany}"
