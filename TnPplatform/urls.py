@@ -2,10 +2,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from student.admin import custom_admin_site
-from . import views
 from student.views import index
-
-
 
 
 urlpatterns = [

@@ -17,6 +17,9 @@ from .utils import generate_pdf, store_pdf_in_drive
 from student.models import Student
 from django.shortcuts import render
 import json
+# import datetime
+
+
 
 
 @login_required(login_url="/accounts/google/login")
@@ -34,15 +37,15 @@ def index(request):
         student_instance.save()
 
 
-        pdf_file = './Resume.pdf'  # or determine the path dynamically
-        pdf_data = generate_pdf(json_file, pdf_file)
+        # pdf_file = f"temp/Resume-{student_id}-{datetime.datetime.now()}.pdf"  
+        pdf_data = generate_pdf(json_file)
 
         # Call the function to store PDF in Google Drive
         x = store_pdf_in_drive(request.user, pdf_data, file_name='Resume.pdf')
-        st = Student.objects.get(Student_ID=student_id)
-        st.Resume_Link = "https://drive.google.com/file/d/"+x 
-        st.resume_json = json_file
-        st.save()
+        # st = Student.objects.get(Student_ID=student_id)
+        student_instance.Resume_Link = "https://drive.google.com/file/d/"+x 
+        # student_instance.resume_json = json_file
+        student_instance.save()
         # return Response(serializer.data, status=status.HTTP_201_CREATED)
         
     return render(request, "Resume_generator.html")

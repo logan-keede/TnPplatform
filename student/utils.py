@@ -22,7 +22,7 @@ import os
 
 
 fpdf.set_global("FPDF_CACHE_MODE", 1)
-def generate_pdf(data, output_file):
+def generate_pdf(data):
     pdf = FPDF('P', 'mm', 'Letter') # Page size
     pdf.add_page()
     pdf.set_auto_page_break(True, margin=7)
@@ -204,7 +204,7 @@ def generate_pdf(data, output_file):
                 for line in lines:
                     pdf.cell(0, 5, line)
     # print(f"Output file: {output_file}")
-    pdf.output(output_file)
+    # pdf.output(output_file, "F")
     # print("PDF generated")
     pdf_data = pdf.output(dest='S').encode('latin1')
     # print("PDF generated")
