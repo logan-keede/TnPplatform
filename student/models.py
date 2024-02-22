@@ -68,6 +68,6 @@ class Job_Student_Application(models.Model):
 def create_profile(sender, instance, created, **kwargs):
     if created:
        # Grabbing data from social account to create profile for that user
-       profile=Student.objects.get(username=instance.user)
-       profile.Student_ID = instance.user
+       profile, created=Student.objects.get_or_create(username=instance.user)
+    #    profile.Student_ID = instance.user
        profile.save()

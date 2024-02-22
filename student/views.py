@@ -7,9 +7,61 @@ from django.shortcuts import get_object_or_404
 from .models import Student, Job_Student_Application, Job_Opening
 import io
 import os
+from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+# from .serializer import JSON2pdfSerializer
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .utils import generate_pdf, store_pdf_in_drive
+from student.models import Student
+from django.shortcuts import render
+import json
+
+
+@login_required(login_url="/accounts/google/login")
+def index(request):
+    if request.method =="POST":
+        jsonData = json.loads(request.body.decode('utf-8')) 
+        student_id = Student.objects.get(username=request.user).Student_ID
+
+        json_file = jsonData['json'][0]
+
+        student_instance, created = Student.objects.get_or_create(Student_ID=student_id)
+
+        # Update the json field and save the instance
+        student_instance.resume_json= json_file
+        student_instance.save()
+
+
+        pdf_file = './Resume.pdf'  # or determine the path dynamically
+        pdf_data = generate_pdf(json_file, pdf_file)
+
+        # Call the function to store PDF in Google Drive
+        x = store_pdf_in_drive(request.user, pdf_data, file_name='Resume.pdf')
+        st = Student.objects.get(Student_ID=student_id)
+        st.Resume_Link = "https://drive.google.com/file/d/"+x 
+        st.resume_json = json_file
+        st.save()
+        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+    return render(request, "Resume_generator.html")
+
+
+
+
+
+
+
+
+
+
+
+
 
 @method_decorator(staff_member_required, name='dispatch')
 class ExcelGeneratorAdminView(View):
+    # permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         students = Student.objects.all()
 

@@ -55,16 +55,13 @@ LOGIN_REDIRECT_URL = '/'
 
 INSTALLED_APPS = [
     "allauth.socialaccount",
-    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
     'rest_framework.authtoken',
-    
     "rest_framework",
     "django.contrib.sites",
     "allauth",
@@ -74,7 +71,6 @@ INSTALLED_APPS = [
     "TrainingProgram",
     "Announcement",
     "student",
-    "api",
     "allauth.usersessions",
     'import_export',
 
@@ -205,8 +201,8 @@ STATIC_URL = "static/"
 
 
 STATICFILES_DIRS = [
-    'api/fonts/',
-    'api/images/',
+    'student/fonts/',
+    'student/images/',
 ]
  
 
