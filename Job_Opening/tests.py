@@ -17,7 +17,8 @@ job_opening_data = {
             'Selection': 'Virtual',
             'location': 'Surat',
             'stipend': 10000,
-            'start': '2024-03-01',
+            'join_date': '2024-03-01',
+            'end_of_registration': '2024-02-10'
         }
 
 put_job_opening_data = {
@@ -30,7 +31,8 @@ put_job_opening_data = {
             'Selection': 'Offline',
             'location': 'Surat',
             'stipend': 10000,
-            'start': '2024-03-01',
+            'join_date': '2024-03-01',
+            'end_of_registration': '2024-02-15'
         }
 
 updated_data = {
@@ -44,7 +46,7 @@ import unittest
 import requests
 import json
 
-class TestTrainingProgramAPI(unittest.TestCase):
+class TestJobOpeningAPI(unittest.TestCase):
     def test_post_request(self):
         for i in range(5):
             response = requests.post('http://localhost:8000/job_openings/', data=json.dumps(job_opening_data), headers={'Content-Type': 'application/json'})
@@ -62,7 +64,7 @@ class TestTrainingProgramAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_patch_request(self):
-        job_opening_id = 3
+        job_opening_id = 8
         response = requests.patch(f'http://localhost:8000/job_openings/{job_opening_id}/', data=json.dumps(updated_data), headers={'Content-Type': 'application/json'})
         self.assertEqual(response.status_code, 200)
 

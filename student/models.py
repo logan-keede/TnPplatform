@@ -5,6 +5,8 @@ from django.dispatch import receiver
 from TrainingProgram.models import TrainingProgram
 from Job_Opening.models import Job_Opening
 from allauth.socialaccount.models import SocialAccount
+from django.conf import settings
+
 
 from .managers import StudentManager
 
@@ -58,10 +60,10 @@ class Student_Training_Registration(models.Model):
     Attended = models.BooleanField()
 
 class Job_Student_Application(models.Model):
-    Student_ID = models.ForeignKey(Student, on_delete = models.CASCADE)
-    Job_ID = models.ForeignKey(Job_Opening, on_delete = models.CASCADE)
+    Student_ID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    Job_ID = models.ForeignKey('Job_Opening.Job_Opening', on_delete=models.CASCADE)  # Use the string format to avoid circular import
     Blocked = models.BooleanField()
-    Status = models.CharField(max_length = 1)
+    Status = models.CharField(max_length=1)
 
 
 @receiver(post_save, sender = SocialAccount)
