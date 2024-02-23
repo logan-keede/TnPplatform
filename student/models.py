@@ -25,21 +25,28 @@ class Student(AbstractUser):
     email = models.EmailField(("email address"), unique=True)
     REQUIRED_FIELDS = ["email"]
 
-    #Student_ID unique for everyone
-    Student_ID = models.CharField(max_length=20, default = "studentID",unique = True)
+    # Additional Fields
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
+    personal_email = models.EmailField(("personal email address"), blank=True)
+    # enrollment_no = models.CharField(max_length=20, unique=True, blank=True)
+    # phone_number = models.CharField(max_length=15, blank=True)
+    whatsapp_number = models.CharField(max_length=15, blank=True)
+    address = models.TextField(blank=True)
 
+    # Existing Fields
+    Student_ID = models.CharField(max_length=20, default="studentID", unique=True)
     BRANCH_CHOICES = [
         ("CSE", "CSE"),
         ("ECE", "ECE"),
     ]
-
     Branch = models.CharField(max_length=50, choices=BRANCH_CHOICES)
     Resume_Link = models.CharField(max_length=300, default="blank")
-    CGPA = models.DecimalField(max_digits = 3, decimal_places = 2, default="5.00")
+    CGPA = models.DecimalField(max_digits=3, decimal_places=2, default="5.00")
     Block_All_Applications = models.BooleanField(default=False)
-    Placed = models.ForeignKey(Job_Opening, null = True, blank = True, on_delete = models.CASCADE)
-    Access_Token = models.CharField(max_length=300, null = True)
-    resume_json = models.JSONField(null = True, blank = True)
+    Placed = models.ForeignKey(Job_Opening, null=True, blank=True, on_delete=models.CASCADE)
+    Access_Token = models.CharField(max_length=300, null=True)
+    resume_json = models.JSONField(null=True, blank=True)
 
     # using personal model manager
     objects = StudentManager()
