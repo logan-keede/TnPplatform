@@ -22,7 +22,7 @@ import os
 
 
 fpdf.set_global("FPDF_CACHE_MODE", 1)
-def generate_pdf(data, output_file):
+def generate_pdf(data):
     pdf = FPDF('P', 'mm', 'Letter') # Page size
     pdf.add_page()
     pdf.set_auto_page_break(True, margin=7)
@@ -30,13 +30,13 @@ def generate_pdf(data, output_file):
     # font_path = abspath('cmr12.ttf')
     # print(font_path)  
 
-    font_path1 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmr12.ttf')
-    font_path2 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmbx12.ttf')
-    font_path3 = os.path.join(settings.BASE_DIR, 'api', 'fonts', 'cmsl12.ttf')
-    image_path1 = os.path.join(settings.BASE_DIR, 'api', 'images', 'phone-flip-solid.png')
-    image_path2 = os.path.join(settings.BASE_DIR, 'api', 'images', 'envelope-solid.png')
-    image_path3 = os.path.join(settings.BASE_DIR, 'api', 'images', 'github.png')
-    image_path4 = os.path.join(settings.BASE_DIR, 'api', 'images', 'linkedin.png')
+    font_path1 = os.path.join(settings.BASE_DIR, 'student', 'fonts', 'cmr12.ttf')
+    font_path2 = os.path.join(settings.BASE_DIR, 'student', 'fonts', 'cmbx12.ttf')
+    font_path3 = os.path.join(settings.BASE_DIR, 'student', 'fonts', 'cmsl12.ttf')
+    image_path1 = os.path.join(settings.BASE_DIR, 'student', 'images', 'phone-flip-solid.png')
+    image_path2 = os.path.join(settings.BASE_DIR, 'student', 'images', 'envelope-solid.png')
+    image_path3 = os.path.join(settings.BASE_DIR, 'student', 'images', 'github.png')
+    image_path4 = os.path.join(settings.BASE_DIR, 'student', 'images', 'linkedin.png')
     pdf.add_font('cmr', '', font_path1, uni = True)
     pdf.add_font('cmbx','', font_path2, uni = True)
     pdf.add_font('cmsl','', font_path3, uni = True)
@@ -204,7 +204,7 @@ def generate_pdf(data, output_file):
                 for line in lines:
                     pdf.cell(0, 5, line)
     # print(f"Output file: {output_file}")
-    pdf.output(output_file)
+    # pdf.output(output_file, "F")
     # print("PDF generated")
     pdf_data = pdf.output(dest='S').encode('latin1')
     # print("PDF generated")
