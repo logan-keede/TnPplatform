@@ -4,10 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from Job_Opening.models import Job_Opening
 from TrainingProgram.models import TrainingProgram
-from .models import Job_Student_Application, Student_Training_Registration
+from .models import Job_Student_Application, Student_Training_Registration, Student
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
 from django.utils import timezone
+import json
+from .utils import generate_pdf, store_pdf_in_drive
+from django.shortcuts import render
 
 # Create your views here.
 def index(request):
@@ -28,6 +31,31 @@ def register_training(request,pk):
     trainingProgram = get_object_or_404(TrainingProgram, pk=pk)
     Student_Training_Registration.objects.create(Student_ID=request.user, Training_ID=trainingProgram, Attended=False)
     return JsonResponse({'status': 'success'})
+
+@login_required(login_url="/accounts/google/login")
+def resume(request):
+    if request.method =="POST":
+        jsonData = json.loads(request.body.decode('utf-8')) 
+        student_id = Student.objects.get(username=request.user).Student_ID
+        json_file = jsonData['json'][0]
+        student_instance, created = Student.objects.get_or_create(Student_ID=student_id)
+        # Update the json field and save the instance
+        student_instance.resume_json= json_file
+        student_instance.save()
+
+
+        # pdf_file = f"temp/Resume-{student_id}-{datetime.datetime.now()}.pdf"  
+        pdf_data = generate_pdf(json_file)
+        print("=========================================")
+        # Call the function to store PDF in Google Drive
+        x = store_pdf_in_drive(request.user, pdf_data, file_name='Resume.pdf')
+        # st = Student.objects.get(Student_ID=student_id)
+        student_instance.Resume_Link = "https://drive.google.com/file/d/"+x 
+        # student_instance.resume_json = json_file
+        student_instance.save()
+        # return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    return render(request, "Resume_generator.html")
 
 # from django.views import View
 # from django.contrib.admin.views.decorators import staff_member_required

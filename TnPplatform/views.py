@@ -4,6 +4,11 @@ from Announcement.models import Announcement
 from TrainingProgram.models import TrainingProgram
 from Job_Opening.models import Job_Opening
 from django.utils import timezone
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+import requests
+
+
 
 def landing_page(request):
     training_programs = TrainingProgram.objects.order_by('-id')[:5]
