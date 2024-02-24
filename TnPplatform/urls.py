@@ -5,12 +5,14 @@ from . import views
 
 '''
 making initialization and testing easier 
+
+
+Edit(Vedic):-Keep following snippet commented during migrate --run-syncdb 
 '''
 from django.contrib.sites.models import Site
 from student.models import Student
 from allauth.socialaccount.models import SocialApp
 import os
-
 if not Student.objects.filter(username=os.getenv("username")).exists():
     Student.objects.create_superuser(username=os.getenv("username"),email=os.getenv("email"), password=os.getenv("password"))
 if not Site.objects.filter(domain="127.0.0.1:8000").exists():

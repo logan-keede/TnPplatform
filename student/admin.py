@@ -10,10 +10,6 @@ from django.http import HttpResponse
 from Job_Opening.admin import JobAdmin
 from django.contrib.auth.models import Group
 from allauth.socialaccount.models import SocialAccount, SocialApp, SocialToken
-from allauth.account.models import EmailAddress
-from django.contrib.sites.models import Site
-from django.db.models.query import QuerySet
-
 
 class YearFilter(admin.SimpleListFilter):
 
