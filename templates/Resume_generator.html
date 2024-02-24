@@ -765,7 +765,7 @@
 
             // Use AJAX to post the JSON data to your Django view
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "{% url 'index' %}", true);
+            xhr.open("POST", "{% url 'resume' %}", true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.setRequestHeader("X-CSRFToken", csrfToken);  // Include CSRF token
             xhr.onreadystatechange = function () {
