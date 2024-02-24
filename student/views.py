@@ -34,6 +34,10 @@ def register_training(request,pk):
 
 @login_required(login_url="/accounts/google/login")
 def resume(request):
+    json1 = Student.objects.get(username=request.user).resume_json 
+    if json1=='blank':
+        json1 = {}
+
     if request.method =="POST":
         jsonData = json.loads(request.body.decode('utf-8')) 
         student_id = Student.objects.get(username=request.user).Student_ID
@@ -54,8 +58,8 @@ def resume(request):
         # student_instance.resume_json = json_file
         student_instance.save()
         # return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    return render(request, "Resume_generator.html")
+    print(json)
+    return render(request, "Resume_generator.html", {"user": json1})
 
 # from django.views import View
 # from django.contrib.admin.views.decorators import staff_member_required

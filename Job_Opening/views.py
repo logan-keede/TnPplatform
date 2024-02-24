@@ -22,4 +22,5 @@ def job_opening_detail(request, pk):
         return redirect("/resume/")
     job = get_object_or_404(Job_Opening, pk=pk)
     user_has_registered = Job_Student_Application.objects.filter(Student_ID=request.user, Job_ID=job).exists()
-    return render(request, 'job_detail.html', {'job': job, 'user_has_registered': user_has_registered})
+    user_is_staff = Job_Student_Application.objects.get(Student_ID=request.user).is_staff
+    return render(request, 'job_detail.html', {'job': job, 'user_has_registered': user_has_registered, "user_is_staff": user_is_staff})
