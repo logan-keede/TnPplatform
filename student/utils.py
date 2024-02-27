@@ -255,6 +255,11 @@ def store_pdf_in_drive(user, pdf_content, file_name='document.pdf'):
     file_id = file.get('id')
     # web_view_link = file.get('webViewLink')
 
+    permission_all = {
+        'type': 'anyone',
+        'role': 'reader',
+    }
+    service.permissions().create(fileId=file_id, body = permission_all).execute()
     return file_id
     # return file.get('id')
 
