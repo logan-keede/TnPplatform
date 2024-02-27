@@ -16,7 +16,7 @@ from django.shortcuts import render
 def index(request):
     return HttpResponse("this is student page")
 
-@login_required
+@login_required(login_url="/accounts/google/login")
 def register_job(request, pk):
     job = get_object_or_404(Job_Opening, pk=pk)
 
@@ -26,7 +26,7 @@ def register_job(request, pk):
     Job_Student_Application.objects.create(Student_ID=request.user, Job_ID=job, Blocked=False, Status='A')
     return JsonResponse({'status': 'success'})
 
-@login_required
+@login_required(login_url="/accounts/google/login")
 def register_training(request,pk):
     trainingProgram = get_object_or_404(TrainingProgram, pk=pk)
     Student_Training_Registration.objects.create(Student_ID=request.user, Training_ID=trainingProgram, Attended=False)
@@ -34,6 +34,10 @@ def register_training(request,pk):
 
 @login_required(login_url="/accounts/google/login")
 def resume(request):
+    json1 = Student.objects.get(username=request.user).resume_json 
+    if json1=='blank':
+        json1 = {}
+
     if request.method =="POST":
         jsonData = json.loads(request.body.decode('utf-8')) 
         student_id = Student.objects.get(username=request.user).Student_ID
@@ -41,7 +45,7 @@ def resume(request):
         student_instance, created = Student.objects.get_or_create(Student_ID=student_id)
         # Update the json field and save the instance
         student_instance.resume_json= json_file
-        student_instance.save()
+        # student_instance.save()
 
 
         # pdf_file = f"temp/Resume-{student_id}-{datetime.datetime.now()}.pdf"  
@@ -54,8 +58,8 @@ def resume(request):
         # student_instance.resume_json = json_file
         student_instance.save()
         # return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    return render(request, "Resume_generator.html")
+    print(json)
+    return render(request, "Resume_generator.html", {"user": json1})
 
 # from django.views import View
 # from django.contrib.admin.views.decorators import staff_member_required
