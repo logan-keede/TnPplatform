@@ -5,11 +5,15 @@ from . import views
 
 '''
 making initialization and testing easier 
+
+
+Edit(Vedic):-Keep following snippet commented during migrate --run-syncdb 
 '''
 from django.contrib.sites.models import Site
 from student.models import Student
 from allauth.socialaccount.models import SocialApp
 import os
+
 import sys
 
 if 'runserver' in sys.argv:
@@ -19,6 +23,7 @@ if 'runserver' in sys.argv:
         Site.objects.create(name="127.0.0.1:8000", domain="127.0.0.1:8000")
     if not SocialApp.objects.filter(provider="google").exists():
         SocialApp.objects.create(provider="google", name="Google", client_id=os.getenv("client"), secret=os.getenv("secret")).sites.set(Site.objects.filter(domain="127.0.0.1:8000"))
+
 
 
 
