@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 import pandas as pd
 # from .views import export_student_data
-from .models import Student, Job_Student_Application, Job_Opening
+from .models import Student, Job_Student_Application, Job_Opening, Student_Training_Registration, TrainingProgram
 import io
 import os
 import zipfile
@@ -120,6 +120,7 @@ def export_student_data(modeladmin, request, queryset):
             student_df = pd.DataFrame(student_info)
 
             job_details = {
+                'S.No': range(1, len(student.job_student_application_set.all()) + 1),
                 'Job ID': [app.Job_ID.id if app.Job_ID else "N/A" for app in applications],
                 'Company': [app.Job_ID.NameofCompany if app.Job_ID else "N/A" for app in applications],
                 'Position': [app.Job_ID.JobProfile if app.Job_ID else "N/A" for app in applications],
@@ -127,12 +128,28 @@ def export_student_data(modeladmin, request, queryset):
             job_df = pd.DataFrame(job_details)
 
             job_df['S.No'] = range(1, len(job_df) + 1)
-            
+
+            training_program_details = {
+                'S.No': range(1, len(student.student_training_registration_set.all()) + 1),
+                'Training ID': [registration.Training_ID.id if registration.Training_ID else "N/A" for registration in student.student_training_registration_set.all()],
+                'Program Name': [registration.Training_ID.training_subject if registration.Training_ID else "N/A" for registration in student.student_training_registration_set.all()],
+                'Attended': [registration.Attended for registration in student.student_training_registration_set.all()],
+            }
+            training_program_df = pd.DataFrame(training_program_details)
+
+            # training_program_df['S.No'] = range(1, len(training_program_df) + 1)
+
             excel_buffer = io.BytesIO()
             with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
-                student_df.to_excel(writer, index=False, sheet_name=f'Student_{student.Student_ID}', startrow=0)
-                pd.DataFrame([[]]).to_excel(writer, index=False, sheet_name=f'Student_{student.Student_ID}', startrow=student_df.shape[0] + 2)
-                job_df[['S.No', 'Job ID', 'Company', 'Position']].to_excel(writer, index=False, sheet_name=f'Student_{student.Student_ID}', startrow=student_df.shape[0] + 3)
+                student_df.to_excel(writer, index=False, sheet_name='Job_Applications', startrow=0)
+                pd.DataFrame([[]]).to_excel(writer, index=False, sheet_name='Job_Applications', startrow=student_df.shape[0] + 2)
+                job_df.to_excel(writer, index=False, sheet_name='Job_Applications', startrow=student_df.shape[0] + 3)
+
+                # Add an empty row between sheets
+                pd.DataFrame([[]]).to_excel(writer, index=False, sheet_name='Job_Applications', startrow=student_df.shape[0] + job_df.shape[0] + 5)
+
+                student_df.to_excel(writer, index=False, sheet_name='Training_Programs', startrow=0)
+                training_program_df.to_excel(writer, index=False, sheet_name='Training_Programs', startrow=student_df.shape[0] + job_df.shape[0] + 6)
 
             zip_file.writestr(f'student_data_{student.Student_ID}.xlsx', excel_buffer.getvalue())
 
@@ -143,6 +160,7 @@ def export_student_data(modeladmin, request, queryset):
     return response
 
 export_student_data.short_description = "Export selected students' data"
+
 
 # def export_job_data(modeladmin, request, queryset):
 #     zip_buffer = io.BytesIO()
@@ -208,9 +226,13 @@ if admin.site.is_registered(Student):
 if admin.site.is_registered(Job_Student_Application):
     admin.site.unregister(Job_Student_Application)
 
+if admin.site.is_registered(Student_Training_Registration):
+    admin.site.unregister(Student_Training_Registration)
+
 if admin.site.is_registered(Job_Opening):
     admin.site.unregister(Job_Opening)
 
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Job_Student_Application)
+admin.site.register(Student_Training_Registration)
 admin.site.register(Job_Opening, JobAdmin)

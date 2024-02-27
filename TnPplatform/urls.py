@@ -13,12 +13,16 @@ from django.contrib.sites.models import Site
 from student.models import Student
 from allauth.socialaccount.models import SocialApp
 import os
-if not Student.objects.filter(username=os.getenv("username")).exists():
-    Student.objects.create_superuser(username=os.getenv("username"),email=os.getenv("email"), password=os.getenv("password"))
-if not Site.objects.filter(domain="127.0.0.1:8000").exists():
-    Site.objects.create(name="127.0.0.1:8000", domain="127.0.0.1:8000")
-if not SocialApp.objects.filter(provider="google").exists():
-    SocialApp.objects.create(provider="google", name="Google", client_id=os.getenv("client"), secret=os.getenv("secret")).sites.set(Site.objects.filter(domain="127.0.0.1:8000"))
+
+import sys
+
+if 'runserver' in sys.argv:
+    if not Student.objects.filter(username=os.getenv("username")).exists():
+        Student.objects.create_superuser(username=os.getenv("username"),email=os.getenv("email"), password=os.getenv("password"))
+    if not Site.objects.filter(domain="127.0.0.1:8000").exists():
+        Site.objects.create(name="127.0.0.1:8000", domain="127.0.0.1:8000")
+    if not SocialApp.objects.filter(provider="google").exists():
+        SocialApp.objects.create(provider="google", name="Google", client_id=os.getenv("client"), secret=os.getenv("secret")).sites.set(Site.objects.filter(domain="127.0.0.1:8000"))
 
 
 
@@ -35,6 +39,6 @@ urlpatterns = [
     path('', include('TrainingProgram.urls')),
     path('', include('student.urls')),
     path('admin/', include('student.urls')),
-    # path('student/', include('student.urls')),
+    path('student/', include('student.urls')),
 
 ]
