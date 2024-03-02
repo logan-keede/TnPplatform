@@ -45,7 +45,8 @@
                 </li>
             </ul>
             <div class="d-flex navbar-btn" role="search">
-                <a href="http://127.0.0.1:8000/accounts/google/login">
+                {% load socialaccount %}
+                <a href='{% provider_login_url "google" %}'>
                     <button class="btn"
                         type="submit">Log in</button>
                 </a>
