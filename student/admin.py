@@ -327,16 +327,16 @@ admin.site.unregister(SocialToken)
 admin.site.unregister(Group)
 # admin.site.unregister(EmailAddress)
 # admin.site.unregister(Token)
-if admin.site.is_registered(Job_Student_Application):
-    admin.site.unregister(Job_Student_Application)
+# if admin.site.is_registered(Job_Student_Application):
+#     admin.site.unregister(Job_Student_Application)
 
-if admin.site.is_registered(Student_Training_Registration):
-    admin.site.unregister(Student_Training_Registration)
+# if admin.site.is_registered(Student_Training_Registration):
+#     admin.site.unregister(Student_Training_Registration)
 
-if admin.site.is_registered(Job_Opening):
-    admin.site.unregister(Job_Opening)
+# if admin.site.is_registered(Job_Opening):
+#     admin.site.unregister(Job_Opening)
 
-admin.site.register(Student, StudentAdmin)
-admin.site.register(Job_Student_Application)
-admin.site.register(Student_Training_Registration)
-admin.site.register(Job_Opening, JobAdmin)
+# admin.site.register(Student, StudentAdmin)
+# admin.site.register(Job_Student_Application)
+# admin.site.register(Student_Training_Registration)
+# admin.site.register(Job_Opening, JobAdmin)
