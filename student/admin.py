@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib import admin
 from django.urls import path
 import pandas as pd
@@ -29,6 +30,35 @@ class YearFilter(admin.SimpleListFilter):
             (('UI22'),('2nd Year')),
             (('UI23'),('1st Year')),
         ]
+    
+    def queryset(self, request, queryset):
+        if self.value() == '':
+            return queryset
+        
+        # returns entries for 4th year
+        if self.value() == 'UI20':
+            return queryset.filter(Student_ID__startswith = 'UI20')
+        
+        # returns entries for 3rd year
+        if self.value() == 'UI21':
+            return queryset.filter(Student_ID__startswith = 'UI21')
+        
+        # returns entries for 2nd year
+        if self.value() == 'UI22':
+            return queryset.filter(Student_ID__startswith = 'UI22')
+        
+        # returns entries for 1st year
+        if self.value() == 'UI23':
+            return queryset.filter(Student_ID__startswith = 'UI23')
+    
+class PlacedFilter(admin.SimpleListFilter):
+
+    # heading of the filter
+    title = "Placements"
+
+    # name passed in url of query
+    parameter_name = "placed"
+
 
     def queryset(self, request, queryset):
         if self.value() == '':
@@ -74,7 +104,7 @@ class PlacedFilter(admin.SimpleListFilter):
         if self.value() == 'placed':
             return queryset.exclude(Placed = None) 
 
-        if self.value() == 'ot_placed':
+        if self.value() == 'not_placed':
             return queryset.filter(Placed = None) 
 
 class PackageCategoryFilter(admin.SimpleListFilter):
@@ -220,19 +250,93 @@ class StudentAdmin(admin.ModelAdmin):
 #     actions = [export_job_data]
 #     list_display = ('id', 'NameofCompany', 'JobProfile', 'ctc')
 
-if admin.site.is_registered(Student):
-    admin.site.unregister(Student)
+class PackageCategoryFilter(admin.SimpleListFilter):
+    
+    # heading of the filter
+    title = "Package Category"
 
-if admin.site.is_registered(Job_Student_Application):
-    admin.site.unregister(Job_Student_Application)
+    # name passed in url of query
+    parameter_name = "category"
 
-if admin.site.is_registered(Student_Training_Registration):
-    admin.site.unregister(Student_Training_Registration)
+    def lookups(self, request, model_admin):
+        """
+        this is the list where the values on the right side are the filter option's names.
+        """
+        return [
+            (('A'),('A')),
+            (('B'),('B')),
+        ]
+    
+    def queryset(self, request, queryset):
+        if self.value() == '':
+            return queryset
+        
+        if self.value() == 'A':
+            return queryset.filter(CGPA__gte = 7.5) 
+        
+        if self.value() == 'B':
+            return queryset.filter(CGPA__lt = 7.5)
 
-if admin.site.is_registered(Job_Opening):
-    admin.site.unregister(Job_Opening)
+# Register your models here.
+# class StudentAdmin(UserAdmin, ImportExportModelAdmin, ExportActionModelAdmin):
+
+#     resource_classes = [StudentResource]
+
+#     list_filter = ("Branch",YearFilter, PlacedFilter, PackageCategoryFilter)
+
+#     list_display = ('username','email','first_name','last_name','Student_ID', 'Branch', 'Resume_Link', 'CGPA', 'Block_All_Applications','Placed', 'Access_Token','resume_json')
+
+
+#     # list_editable = ('Student_ID',)
+
+#     ordering = ("email",)
+
+#     fieldsets = (
+#         (None, {'fields': ('username','email', 'password')}),
+#         ('Personal info', {'fields': ('first_name', 'last_name')}),
+#         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+#         ('Student info', {'fields': ('Student_ID', 'Branch', 'Resume_Link', 'CGPA', 'Block_All_Applications','Placed')}),
+#     )
+#     add_fieldsets = (
+#         (None, {
+#             "classes": ("wide",),
+#             "fields": (
+#                 "email", "password1", "password2", "is_staff",
+#                 "is_active", "groups", "user_permissions"
+#             )}
+#         ),
+#     )
+#     search_fields = ("username","email", "Branch", "Student_ID", )
+
+class TrainingRegAdmin(admin.ModelAdmin):
+    list_display = ('Student_ID','Training_ID','Attended')
+    search_fields = ('Student_ID__Student_ID', 'Training_ID__training_subject')
+
+class JobApplicationAdmin(admin.ModelAdmin):
+    list_display = ('Student_ID','Job_ID','Blocked', 'Status')
+    search_fields = ('Student_ID__Student_ID', 'Job_ID__NameofCompany')
 
 admin.site.register(Student, StudentAdmin)
-admin.site.register(Job_Student_Application)
-admin.site.register(Student_Training_Registration)
-admin.site.register(Job_Opening, JobAdmin)
+admin.site.register(Student_Training_Registration, TrainingRegAdmin)
+admin.site.register(Job_Student_Application, JobApplicationAdmin)
+
+admin.site.unregister(SocialAccount)
+# admin.site.unregister(SocialApp)
+admin.site.unregister(SocialToken)
+# admin.site.unregister(Site)
+admin.site.unregister(Group)
+# admin.site.unregister(EmailAddress)
+# admin.site.unregister(Token)
+# if admin.site.is_registered(Job_Student_Application):
+#     admin.site.unregister(Job_Student_Application)
+
+# if admin.site.is_registered(Student_Training_Registration):
+#     admin.site.unregister(Student_Training_Registration)
+
+# if admin.site.is_registered(Job_Opening):
+#     admin.site.unregister(Job_Opening)
+
+# admin.site.register(Student, StudentAdmin)
+# admin.site.register(Job_Student_Application)
+# admin.site.register(Student_Training_Registration)
+# admin.site.register(Job_Opening, JobAdmin)
