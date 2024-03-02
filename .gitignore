@@ -2,7 +2,6 @@
 
 # Python bytecode
 __pycache__/
-
 # Virtual environment   
 venv/
 env/
@@ -10,7 +9,6 @@ env/
 
 # Environment variables
 .env
-.env.example
 
 # Compiled Python files
 *.pyc
