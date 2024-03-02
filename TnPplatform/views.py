@@ -53,4 +53,4 @@ def landing_page(request):
         'job_openings': job_openings,
     }
 
-    return render(request, 'landing_page.html', context)
+    return render(request, 'index.html', context)
