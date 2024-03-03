@@ -20,6 +20,10 @@ body {
     overflow-x: hidden;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* body::-webkit-scrollbar {
     display: none;
 } */
@@ -43,7 +47,7 @@ body {
     padding: 1rem 4rem;
 }
 
-.navbar-btn button:nth-child(1) {
+.navbar-btn button:hover {
     backgroud-color: var(--indigo-25);
     color: var(--indigo-600);
     border: 1px solid var(--indigo-600);
@@ -51,7 +55,7 @@ body {
 
 }
 
-.navbar-btn button:nth-child(2) {
+.navbar-btn button {
     color: var(--indigo-25);
     background-color: var(--indigo-600);
     margin: 0 0.25rem;

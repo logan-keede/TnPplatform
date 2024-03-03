@@ -5,7 +5,7 @@
 <nav
     class="navbar navbar-expand-lg bg-body-tertiary custom-bg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href="#">TNP IIIT Surat</a>
         <button class="navbar-toggler" type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent"
@@ -45,10 +45,11 @@
                 </li>
             </ul>
             <div class="d-flex navbar-btn" role="search">
-                <button class="btn"
-                    type="submit">Sign up</button>
-                <button class="btn"
-                    type="submit">Log in</button>
+                {% load socialaccount %}
+                <a href='{% provider_login_url "google" %}'>
+                    <button class="btn"
+                        type="submit">Log in</button>
+                </a>
             </di>
         </div>
     </div>
@@ -107,26 +108,30 @@
                     alt>
             </div>
         </div>
-        <button class="btn resume-btn">Build your resume
-            today!</button>
+        <a href="{% url 'resume' %}">
+            <button class="btn resume-btn">Build your resume
+                today!</button>
+        </a>
     </section>
     <section class="announcements light-section">
         <h1 class="light-heading"><span>Announcements</span><br>that are
             important...</h1>
         <div class="list">
             {% for announcement in announcements %}
-            <div class="row">
-                <div class="col-1">
-                    <img class="calender"
-                        src="{% static 'assets/svg/calender.svg'%}" alt>
-                    <div
-                        class="date"><span>{{announcement.date_posted|date:"d"}}</span>{{announcement.date_posted|date:"S"}}<br>{{announcement.date_posted|date:"M"}}</div>
+            <a href="{% url 'announcement_detail' announcement.id %}">
+                <div class="row">
+                    <div class="col-1">
+                        <img class="calender"
+                            src="{% static 'assets/svg/calender.svg'%}" alt>
+                        <div
+                            class="date"><span>{{announcement.date_posted|date:"d"}}</span>{{announcement.date_posted|date:"S"}}<br>{{announcement.date_posted|date:"M"}}</div>
+                    </div>
+                    <div class="col-11">
+                        <h2>{{announcement.title}}</h2>
+                        <p>{{announcement.content}}</p>
+                    </div>
                 </div>
-                <div class="col-11">
-                    <h2>{{announcement.title}}</h2>
-                    <p>{{announcement.content}}</p>
-                </div>
-            </div>
+            </a>
             {% endfor%}
         </div>
     </section>
@@ -141,24 +146,25 @@
                 <!-- Slides -->
                 {%for program in training_programs%}
                 <div class="swiper-slide">
-                    <div class="card">
-                        <img src="{%static 'assets/job.png'%}"
-                            class="card-img-top"
-                            alt="...">
-                        <div class="card-body">
-
-                            <div class="card-title"><img
-                                    src="{% static 'assets/backLogos/image1.png' %}"
-                                    alt>{{program.training_organization}}</div>
-                            <p
-                                class="card-text">{{program.training_subject}}</p>
+                    <a href="{% url 'training_program_detail' program.id %}">
+                        <div class="card">
+                            <img src="{%static 'assets/job.png'%}"
+                                class="card-img-top"
+                                alt="...">
+                            <div class="card-body">
+                                <div class="card-title"><img
+                                        src="{% static 'assets/backLogos/image1.png' %}"
+                                        alt>{{program.training_organization}}</div>
+                                <p
+                                    class="card-text">{{program.training_subject}}</p>
+                            </div>
+                            <div class="card-body time-details">
+                                <div><i
+                                        class="bi bi-calendar"></i>
+                                    {{program.end_of_registration}}</div>
+                            </div>
                         </div>
-                        <div class="card-body time-details">
-                            <div><i
-                                    class="bi bi-calendar"></i>
-                                {{program.end_of_registration}}</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 {% endfor %}
 
@@ -184,23 +190,24 @@
                 {% for job in job_openings%}
 
                 <div class="swiper-slide">
-                    <div class="card">
-                        <img src="{%static 'assets/job.png'%}"
-                            class="card-img-top"
-                            alt="...">
-                        <div class="card-body">
-
-                            <div class="card-title"><img
-                                    src="{% static 'assets/backLogos/image1.png' %}"
-                                    alt>{{job.NameofCompany}}</div>
-                            <p class="card-text">{{job.JobProfile}}</p>
+                    <a href="{% url 'job_opening_detail' job.id %}">
+                        <div class="card">
+                            <img src="{%static 'assets/job.png'%}"
+                                class="card-img-top"
+                                alt="...">
+                            <div class="card-body">
+                                <div class="card-title"><img
+                                        src="{% static 'assets/backLogos/image1.png' %}"
+                                        alt>{{job.NameofCompany}}</div>
+                                <p class="card-text">{{job.JobProfile}}</p>
+                            </div>
+                            <div class="card-body time-details">
+                                <div><i
+                                        class="bi bi-calendar"></i>
+                                    {{job.end_of_registration}}</div>
+                            </div>
                         </div>
-                        <div class="card-body time-details">
-                            <div><i
-                                    class="bi bi-calendar"></i>
-                                {{job.end_of_registration}}</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
 
                 {% endfor %}
